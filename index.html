@@ -59,4 +59,37 @@
     </div>
 
 </body>
+    <script>
+const repo = "RathodS16/RathodS16.github.io";
+
+// Universal function to load folder files
+async function loadSection(folder, elementId, icon) {
+    try {
+        const res = await fetch(https://api.github.com/repos/${repo}/contents/${folder});
+        const files = await res.json();
+
+        const box = document.getElementById(elementId);
+        box.innerHTML = "";
+
+        files.reverse().forEach(file => {
+            let cleanName = file.name.replace(".pdf", "").replace(".txt", "").replace(".jpg", "").replace(".png", "");
+            box.innerHTML += 
+                <div class="news-item">
+                    <span>${icon} ${cleanName}</span>
+                    <a href="${file.download_url}" target="_blank">View</a>
+                </div>
+            ;
+        });
+    } catch (e) {
+        document.getElementById(elementId).innerHTML = "No updates yet.";
+    }
+}
+
+// Load all sections
+loadSection("jobs", "jobs-list", "📌");
+loadSection("admit", "admit-list", "🎫");
+loadSection("results", "results-list", "📊");
+loadSection("syllabus", "syllabus-list", "📘");
+loadSection("newspaper", "newspaper-list", "📰");
+</script>
 </html>
