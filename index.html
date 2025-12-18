@@ -1,95 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Govt Job Alert</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        .navbar {
-            background-color: #003b70;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-        }
-        .menu {
-            display: flex;
-            background: #00509e;
-            padding: 10px;
-            justify-content: center;
-            gap: 20px;
-        }
-        .menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        .content {
-            padding: 20px;
-        }
-        .section-title {
-            font-size: 22px;
-            margin-top: 30px;
-            border-left: 5px solid #003b70;
-            padding-left: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Govt Job Alert</title>
+
+<style>
+body { font-family: Arial, sans-serif; margin:0; background:#f4f6f8; }
+header { background:#003366; color:white; padding:15px; text-align:center; font-size:24px; }
+.section { padding:20px; }
+.section-title { font-size:20px; border-left:5px solid #003366; padding-left:10px; margin-bottom:10px; }
+.box { background:white; padding:15px; border-radius:6px; }
+.news-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; }
+.news-item a { text-decoration:none; color:#003366; font-weight:bold; }
+</style>
 </head>
+
 <body>
 
-    <div class="navbar">Govt Job Alert</div>
+<header>Govt Job Alert</header>
 
-    <div class="menu">
-        <a href="#">Home</a>
-        <a href="#">Latest Jobs</a>
-        <a href="#">Admit Cards</a>
-        <a href="#">Results</a>
-        <a href="#">Syllabus</a>
-        <a href="#">Newspaper</a>
-    </div>
+<div class="section">
+  <div class="section-title">Latest Jobs</div>
+  <div class="box" id="jobs-list">Loading jobs...</div>
+</div>
 
-    <div class="content">
-        <h2 class="section-title">Latest Job Notifications</h2>
-        <p>You can post daily job updates here without any coding.</p>
+<div class="section">
+  <div class="section-title">Admit Cards</div>
+  <div class="box" id="admit-list">Loading admit cards...</div>
+</div>
 
-        <h2 class="section-title">Daily Newspaper (Any Language)</h2>
-        <p>You can upload newspaper images or text daily without coding.</p>
-    </div>
+<div class="section">
+  <div class="section-title">Results</div>
+  <div class="box" id="results-list">Loading results...</div>
+</div>
 
-</body>
-    <script>
+<div class="section">
+  <div class="section-title">Syllabus</div>
+  <div class="box" id="syllabus-list">Loading syllabus...</div>
+</div>
+
+<div class="section">
+  <div class="section-title">Daily Newspaper</div>
+  <div class="box" id="newspaper-list">Loading newspapers...</div>
+</div>
+
+<!-- 🔽 JAVASCRIPT (DO NOT MOVE) -->
+<script>
 const repo = "RathodS16/RathodS16.github.io";
 
-// Universal function to load folder files
 async function loadSection(folder, elementId, icon) {
-    try {
-        const res = await fetch(https://api.github.com/repos/${repo}/contents/${folder});
-        const files = await res.json();
+  try {
+    const res = await fetch(https://api.github.com/repos/${repo}/contents/${folder});
+    if (!res.ok) throw new Error("Folder not found");
 
-        const box = document.getElementById(elementId);
-        box.innerHTML = "";
+    const files = await res.json();
+    const box = document.getElementById(elementId);
+    box.innerHTML = "";
 
-        files.reverse().forEach(file => {
-            let cleanName = file.name.replace(".pdf", "").replace(".txt", "").replace(".jpg", "").replace(".png", "");
-            box.innerHTML += 
-                <div class="news-item">
-                    <span>${icon} ${cleanName}</span>
-                    <a href="${file.download_url}" target="_blank">View</a>
-                </div>
-            ;
-        });
-    } catch (e) {
-        document.getElementById(elementId).innerHTML = "No updates yet.";
+    if (files.length === 0) {
+      box.innerHTML = "No updates yet.";
+      return;
     }
+
+    files.reverse().forEach(file => {
+      const name = file.name.replace(/\.(txt|pdf)$/i, "");
+      box.innerHTML += 
+        <div class="news-item">
+          <span>${icon} ${name}</span>
+          <a href="job.html?file=${file.name}&folder=${folder}" target="_blank">Open</a>
+        </div>;
+    });
+  } catch (e) {
+    document.getElementById(elementId).innerHTML = "No updates yet.";
+  }
 }
 
-// Load all sections
-loadSection("jobs", "jobs-list", "📌");
-loadSection("admit", "admit-list", "🎫");
-loadSection("results", "results-list", "📊");
-loadSection("syllabus", "syllabus-list", "📘");
-loadSection("newspaper", "newspaper-list", "📰");
+loadSection("jobs","jobs-list","📌");
+loadSection("admit","admit-list","🎫");
+loadSection("results","results-list","📊");
+loadSection("syllabus","syllabus-list","📘");
+loadSection("newspaper","newspaper-list","📰");
 </script>
+
+</body>
 </html>
