@@ -257,13 +257,23 @@ a:hover{
   
 <section class="box">
   <h2>Job Categories</h2>
+
+  <!-- SEARCH BOX -->
+  <input
+    type="text"
+    id="jobSearch"
+    placeholder="🔍 Search jobs (Bank, SSC, Medical, Karnataka...)"
+    class="job-search"
+  >
+
+  <!-- CATEGORIES -->
   <div class="categories">
-    <a href="bank-jobs.html" class="cat-btn">Bank Jobs</a>
-    <a href="railway-jobs.html" class="cat-btn">Railway Jobs</a>
-    <a href="police-jobs.html" class="cat-btn">Police / Defence</a>
-    <a href="teaching-jobs.html" class="cat-btn">Teaching Jobs</a>
-    <a href="medical-jobs.html" class="cat-btn">Medical Jobs</a>
-    <a href="karnataka-jobs.html" class="cat-btn">Karnataka Jobs</a>
+    <a href="bank-jobs.html">🏦 Bank Jobs</a>
+    <a href="railway-jobs.html">🚆 Railway Jobs</a>
+    <a href="police-defence-jobs.html">🛡 Police / Defence</a>
+    <a href="teaching-jobs.html">📚 Teaching Jobs</a>
+    <a href="medical-jobs.html">🩺 Medical Jobs</a>
+    <a href="karnataka-jobs.html">📍 Karnataka Jobs</a>
   </div>
 </section>
 
@@ -468,6 +478,20 @@ Exact dates and details will be published in official notifications.
   <a href="privacy-policy.html">Privacy Policy</a> |
 <a href="disclaimer.html">Disclaimer</a>
 </footer>
+
+<script>
+  const searchInput = document.getElementById("jobSearch");
+
+  searchInput.addEventListener("keyup", function () {
+    let filter = searchInput.value.toLowerCase();
+    let jobs = document.querySelectorAll(".job-card");
+
+    jobs.forEach(job => {
+      let text = job.innerText.toLowerCase();
+      job.style.display = text.includes(filter) ? "" : "none";
+    });
+  });
+</script>
 
 </body>
 </html>
